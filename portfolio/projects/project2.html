@@ -1,0 +1,36 @@
+<!-- PROJECT 2: Lead Capture Form with AJAX -->
+<!-- File: project2.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Capture Form</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <h1>Get in Touch</h1>
+    <form id="leadForm">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message"></textarea>
+        <button type="submit">Submit</button>
+    </form>
+    <p id="response"></p>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#leadForm').on('submit', function (e) {
+            e.preventDefault();
+            $('#response').text('Submitting...');
+            // Fake AJAX
+            setTimeout(() => {
+                $('#response').text('Thank you! We will contact you soon.');
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>
