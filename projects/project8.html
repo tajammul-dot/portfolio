@@ -2,40 +2,66 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simple Calculator</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css" />
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
             background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header,
+        footer {
+            background-color: #001f70;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        main {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 40px 20px;
         }
 
         .calculator {
-            background: #fff;
+            background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 300px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             width: 100%;
+            max-width: 350px;
+        }
+
+        .calculator h1 {
+            margin-top: 0;
+            font-size: 1.6em;
+            color: #001f70;
+            text-align: center;
         }
 
         #display {
             width: 100%;
             height: 50px;
-            margin-bottom: 10px;
-            font-size: 1.5em;
+            font-size: 1.4em;
             text-align: right;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            background: #f9f9f9;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
         }
 
         .buttons {
@@ -45,14 +71,13 @@
         }
 
         button {
-            padding: 20px;
+            padding: 18px;
             font-size: 1.2em;
             background: #007bff;
-            color: #fff;
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s ease;
         }
 
         button:hover {
@@ -67,40 +92,41 @@
 
 <body>
 
-    <main class="calculator">
-        <header>
-            <nav>
-                <ul class="navbar">
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a href="../about.html">About</a></li>
-                    <li><a href="../contact.html">Contact</a></li>
-                    <li><a href="../projects.html">Projects</a></li>
-                </ul>
+    <header>
+        <nav>
+            <ul class="navbar">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+                <li><a href="../projects.html">Projects</a></li>
+            </ul>
+        </nav>
+    </header>
 
-            </nav>
-            <h1 style="color: aliceblue;">Simple Calculator</h1>
-            <p>Made using HTML, CSS, and JavaScript</p>
-        </header>
-        <input type="text" id="display" disabled>
-        <div class="buttons">
-            <button onclick="clearDisplay()">C</button>
-            <button onclick="appendValue('/')">/</button>
-            <button onclick="appendValue('*')">*</button>
-            <button onclick="deleteLast()">DEL</button>
-            <button onclick="appendValue('7')">7</button>
-            <button onclick="appendValue('8')">8</button>
-            <button onclick="appendValue('9')">9</button>
-            <button onclick="appendValue('-')">-</button>
-            <button onclick="appendValue('4')">4</button>
-            <button onclick="appendValue('5')">5</button>
-            <button onclick="appendValue('6')">6</button>
-            <button onclick="appendValue('+')">+</button>
-            <button onclick="appendValue('1')">1</button>
-            <button onclick="appendValue('2')">2</button>
-            <button onclick="appendValue('3')">3</button>
-            <button onclick="calculate()">=</button>
-            <button onclick="appendValue('0')" class="zero">0</button>
-            <button onclick="appendValue('.')">.</button>
+    <main>
+        <div class="calculator">
+            <h1>Simple Calculator</h1>
+            <input type="text" id="display" disabled />
+            <div class="buttons">
+                <button onclick="clearDisplay()">C</button>
+                <button onclick="appendValue('/')">/</button>
+                <button onclick="appendValue('*')">*</button>
+                <button onclick="deleteLast()">DEL</button>
+                <button onclick="appendValue('7')">7</button>
+                <button onclick="appendValue('8')">8</button>
+                <button onclick="appendValue('9')">9</button>
+                <button onclick="appendValue('-')">-</button>
+                <button onclick="appendValue('4')">4</button>
+                <button onclick="appendValue('5')">5</button>
+                <button onclick="appendValue('6')">6</button>
+                <button onclick="appendValue('+')">+</button>
+                <button onclick="appendValue('1')">1</button>
+                <button onclick="appendValue('2')">2</button>
+                <button onclick="appendValue('3')">3</button>
+                <button onclick="calculate()">=</button>
+                <button onclick="appendValue('0')" class="zero">0</button>
+                <button onclick="appendValue('.')">.</button>
+            </div>
         </div>
     </main>
 
