@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add & Fetch Users</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        form input {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        form button,
+        #btn {
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        h1,
+        h2 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 style="color: aliceblue;">Add & Fetch User Data</h1>
+        <p>Built using JavaScript, AJAX, and DOM manipulation</p>
+    </header>
+
+    <section>
+        <h2>Add User</h2>
+        <form id="userForm">
+            <input type="text" id="name" placeholder="Enter Name" required><br>
+            <input type="email" id="email" placeholder="Enter Email" required><br>
+            <input type="text" id="phone" placeholder="Enter Phone" required><br>
+            <input type="text" id="website" placeholder="Enter Website" required><br>
+            <button type="submit">Add User</button>
+        </form>
+
+        <h2>Fetch Users</h2>
+        <button id="btn">Fetch Users</button>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Website</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User data goes here -->
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Tajammul Hussain</p>
+    </footer>
+
+    <script>
+        // Fetch users
+        document.getElementById('btn').addEventListener('click', function () {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://jsonplaceholder.typicode.com/users?_limit=3", true);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    let users = JSON.parse(xhr.responseText);
+                    let tbody = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+                    tbody.innerHTML = '';
+
+                    users.forEach(user => {
+                        let row = tbody.insertRow();
+                        row.innerHTML = `
+              <td>${user.name}</td>
+              <td>${user.email}</td>
+              <td>${user.phone}</td>
+              <td>${user.website}</td>
+            `;
+                    });
+                }
+            };
+            xhr.send();
+        });
+
+        // Add user
+        document.getElementById('userForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            let name = document.getElementById('name').value;
+            let email = document.getElementById('email').value;
+            let phone = document.getElementById('phone').value;
+            let website = document.getElementById('website').value;
+
+            let newUser = {
+                name,
+                email,
+                phone,
+                website
+            };
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://jsonplaceholder.typicode.com/users", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            xhr.onload = function () {
+                if (xhr.status === 201) {
+                    console.log("User added successfully", xhr.responseText);
+                    alert("User added successfully!");
+                } else {
+                    console.error("Error adding user", xhr.status, xhr.statusText);
+                }
+            };
+
+            xhr.send(JSON.stringify(newUser));
+        });
+    </script>
+</body>
+
+</html>
