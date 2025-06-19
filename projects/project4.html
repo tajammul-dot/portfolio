@@ -96,12 +96,15 @@
 
             if (theme === "light") {
                 body.style.backgroundColor = "white";
+                body.style.color = "black"; // ✅ add this
                 message = "Theme changed to Light.";
             } else if (theme === "dark") {
                 body.style.backgroundColor = "#333";
+                body.style.color = "white"; // ✅ add this
                 message = "Theme changed to Dark.";
             } else if (theme === "blue") {
                 body.style.backgroundColor = "#ADD8E6";
+                body.style.color = "black"; // ✅ or another visible color
                 message = "Theme changed to Blue.";
             } else {
                 message = "Please select a theme.";
