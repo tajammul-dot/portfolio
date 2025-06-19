@@ -1,0 +1,85 @@
+<!-- DATA SCRAPER PROJECT -->
+<!-- File: project4.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Scraper</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        table {
+            border: 2px solid black;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid black;
+        }
+
+        th {
+            background-color: rgb(169, 211, 211);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Data Scraper with JavaScript</h1>
+        <p>Using AJAX, DOM Manipulation, and jQuery</p>
+    </header>
+    <section>
+        <button id="btn">Scrape Data</button>
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Website</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </section>
+    <footer>
+        <p>&copy; 2025 Tajammul Hussain</p>
+    </footer>
+
+    <script>
+        document.getElementById("btn").addEventListener("click", function () {
+            let xhr = new XMLHttpRequest();
+            let url = "https://jsonplaceholder.typicode.com/users";
+
+            xhr.open("GET", url, true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    let users = JSON.parse(xhr.responseText);
+                    let tbody = document.getElementById("tbody");
+                    tbody.innerHTML = "";
+
+                    users.forEach(user => {
+                        let row = tbody.insertRow();
+                        row.innerHTML = `
+              <td>${user.name}</td>
+              <td>${user.email}</td>
+              <td>${user.phone}</td>
+              <td>${user.website}</td>
+            `;
+                    });
+                } else {
+                    console.error("Error loading data");
+                }
+            };
+            xhr.send();
+        });
+    </script>
+</body>
+
+</html>
