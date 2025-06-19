@@ -92,19 +92,27 @@
         function applyTheme() {
             const theme = document.getElementById("themeSelect").value;
             const body = document.body;
+            const h1 = document.querySelector("h1");
+            const p = document.querySelector("p");
             let message = "";
 
             if (theme === "light") {
                 body.style.backgroundColor = "white";
-                body.style.color = "black"; // ✅ add this
+                body.style.color = "black";
+                h1.style.color = "black";
+                p.style.color = "black";
                 message = "Theme changed to Light.";
             } else if (theme === "dark") {
                 body.style.backgroundColor = "#333";
-                body.style.color = "white"; // ✅ add this
+                body.style.color = "white";
+                h1.style.color = "white";
+                p.style.color = "white";
                 message = "Theme changed to Dark.";
             } else if (theme === "blue") {
                 body.style.backgroundColor = "#ADD8E6";
-                body.style.color = "black"; // ✅ or another visible color
+                body.style.color = "black";
+                h1.style.color = "black";
+                p.style.color = "black";
                 message = "Theme changed to Blue.";
             } else {
                 message = "Please select a theme.";
@@ -112,6 +120,7 @@
 
             document.getElementById("message").innerText = message;
         }
+
 
         function hoverImage() {
             document.getElementById("productImage").src = "https://zerolifestyle.co/cdn/shop/files/Jewel_2_2288ba30-27d5-4139-9966-91b4c0f537ae.webp?v=1744983680&width=700";
