@@ -1,0 +1,106 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(to right, #338ad6, #00f2fe);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 20px;
+    color: #333;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-size: 42px;
+    color: #ffffff;
+}
+
+header p {
+    color: #f1f1f1;
+    font-size: 16px;
+    margin-top: 8px;
+}
+
+.app-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 480px;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #0077ff;
+    margin-bottom: 16px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+button {
+    background: #0077ff;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+button:hover {
+    background: #005dc5;
+}
+
+.weather-box {
+    background: #f5faff;
+    margin-top: 20px;
+    padding: 20px;
+    border-left: 5px solid #0077ff;
+    border-radius: 10px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.coordinates {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.coord {
+    flex: 1;
+    background: #f0f0f0;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    font-weight: 600;
+}
+
+footer {
+    text-align: center;
+    color: #ffffff;
+    font-size: 14px;
+    margin-top: 40px;
+}

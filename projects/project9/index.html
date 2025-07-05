@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>⛅️ Weather App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="project9.css">
+</head>
+
+<body>
+    <header>
+        <h1>⛅️ Weather App</h1>
+        <p>Real-time weather info using your location or city name</p>
+    </header>
+
+    <!-- Search by Location -->
+    <section class="app-card">
+        <h2>📍 Weather by Location</h2>
+        <div class="coordinates">
+            <div class="coord">
+                <p>Latitude</p>
+                <p id="latBox">--</p>
+            </div>
+            <div class="coord">
+                <p>Longitude</p>
+                <p id="lonBox">--</p>
+            </div>
+        </div>
+        <button id="btn1">Get My Weather</button>
+        <div id="weather1" class="weather-box"></div>
+    </section>
+
+    <!-- Search by City -->
+    <section class="app-card">
+        <h2>🏙️ Weather by City</h2>
+        <input type="text" id="cityName" placeholder="Enter City Name" />
+        <button id="btn2">Get Weather</button>
+        <div id="weather2" class="weather-box"></div>
+    </section>
+
+    <footer>
+        <p>🔗 Powered by OpenWeatherMap | Made by Tajammul 💻</p>
+    </footer>
+
+    <script src="project9.js"></script>
+</body>
+
+</html>
