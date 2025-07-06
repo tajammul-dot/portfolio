@@ -77,7 +77,7 @@ function getWeather2() {
 
             document.getElementById('weather2').innerHTML =
                 `<p><strong>City:</strong> ${cityName}</p>
-           <p><strong>Temperature:</strong> ${Math.round(temp)}°C</p>
+           <p><strong>Temperature:</strong> ${temp}°C</p>
            <p><strong>Condition:</strong> ${condition}</p>`;
         } else {
             document.getElementById('weather2').innerHTML = 'Error fetching weather data.';
