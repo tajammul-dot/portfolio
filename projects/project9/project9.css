@@ -43,6 +43,9 @@ header p {
     margin-bottom: 30px;
 }
 
+
+
+
 h2 {
     color: #0077ff;
     margin-bottom: 16px;
@@ -67,6 +70,31 @@ button {
     cursor: pointer;
     transition: background 0.3s ease;
     width: 100%;
+}
+
+
+.drop-box {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 300px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.drop-box div {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.drop-box div:hover {
+    background-color: #f0f0f0;
+}
+
+
+.weather-box {
+    margin-top: 15px;
 }
 
 button:hover {
