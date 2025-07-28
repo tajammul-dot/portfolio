@@ -23,7 +23,7 @@ body {
     width: 100%;
     max-width: 400px;
     transform: translateY(0);
-    transition: all 0.3s ease;
+    transition: all 0.9s ease;
 }
 
 .login-container:hover {

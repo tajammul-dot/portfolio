@@ -41,13 +41,7 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
 });
 
 // Add floating animation to the container
-document.addEventListener('DOMContentLoaded', function () {
-    const container = document.querySelector('.login-container');
 
-    setInterval(() => {
-        container.style.transform = `translateY(${Math.sin(Date.now() * 0.001) * 3}px)`;
-    }, 16);
-});
 
 // Add input focus effects
 document.querySelectorAll('input').forEach(input => {
