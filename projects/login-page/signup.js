@@ -4,12 +4,15 @@ function togglePassword(fieldId) {
 
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
-        toggleIcon.textContent = '🙈';
+        toggleIcon.src = 'hide.png'; // change icon to hide
     } else {
         passwordInput.type = 'password';
-        toggleIcon.textContent = '👁️';
+        toggleIcon.src = 'eye.png'; // change icon to show
     }
 }
+
+
+
 
 function checkPasswordStrength(password) {
     let strength = 0;
