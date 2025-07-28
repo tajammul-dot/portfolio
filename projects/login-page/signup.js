@@ -1,16 +1,17 @@
-function togglePassword(fieldId) {
-    const passwordInput = document.getElementById(fieldId);
-    const toggleIcon = passwordInput.nextElementSibling;
+
+
+function togglePassword(inputId, iconId) {
+    const passwordInput = document.getElementById(inputId);
+    const toggleIcon = document.getElementById(iconId);
 
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
-        toggleIcon.src = 'hide.png'; // change icon to hide
+        toggleIcon.src = 'hide.png'; // show hide icon
     } else {
         passwordInput.type = 'password';
-        toggleIcon.src = 'eye.png'; // change icon to show
+        toggleIcon.src = 'eye.png'; // show eye icon
     }
 }
-
 
 
 

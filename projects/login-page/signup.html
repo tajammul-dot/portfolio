@@ -48,11 +48,13 @@
                 </div>
             </div>
 
+            <!-- New Form -->
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
-                <span class="password-toggle" onclick="togglePassword('password')"> <img id="toggleIcon" src="eye.png"
-                        width="20px" alt=""></span>
+                <span class="password-toggle" onclick="togglePassword('password', 'toggleIcon1')">
+                    <img id="toggleIcon1" src="eye.png" width="20px" alt="">
+                </span>
                 <div class="password-strength">
                     <div class="strength-bar">
                         <div class="strength-fill" id="strengthFill"></div>
@@ -65,11 +67,15 @@
             <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
                 <input type="password" id="confirmPassword" name="confirmPassword" required>
-                <span class="password-toggle" onclick="togglePassword('confirmPassword')"> <img id="toggleIcon"
-                        src="eye.png" width="20px" alt=""></span>
+                <span class="password-toggle" onclick="togglePassword('confirmPassword', 'toggleIcon2')">
+                    <img id="toggleIcon2" src="eye.png" width="20px" alt="">
+                </span>
                 <div class="password-match" id="passwordMatch"></div>
                 <div class="error-message" id="confirmPasswordError"></div>
             </div>
+
+
+
 
             <div class="terms-checkbox">
                 <input type="checkbox" id="terms" name="terms" required>
