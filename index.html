@@ -654,10 +654,11 @@
                 Specializing in modern JavaScript, React, and cutting-edge 3D web development.
             </p>
             <div class="hero-buttons">
-                <a href="https://tajammul-dot.github.io/portfolio/projects.html" class="btn btn-primary">
+                <a href="#projects" class="btn btn-primary" id="exploreWorkBtn">
                     <i class="fas fa-rocket"></i>
                     Explore My Work
                 </a>
+
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=tajammul.hussain.pro@gmail.com"
                     class="btn btn-secondary">
                     <i class="fas fa-paper-plane"></i>
@@ -858,6 +859,20 @@
 
                 </div>
             </div>
+
+            <div class="project-card"
+                style="text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                <h3 class="project-title" style="margin-bottom:1rem;">Want to See More?</h3>
+                <p class="project-description" style="max-width:350px;">
+                    Explore my complete collection of web development projects, experiments, and creative builds.
+                </p>
+                <a href="projects.html" class="btn btn-primary" style="margin-top:1.5rem; text-decoration:none;">
+                    <i class="fas fa-folder-open"></i> View All Projects
+                </a>
+            </div>
+
+
+
         </div>
     </section>
 
@@ -1143,6 +1158,13 @@
                     typeWriter(greetingElement, 'console.log("Hello World!");', 80);
                 }
             }, 2500);
+        });
+        // Smooth scroll to Featured Projects
+        document.getElementById("exploreWorkBtn").addEventListener("click", function (e) {
+            e.preventDefault();
+            document.getElementById("projects").scrollIntoView({
+                behavior: "smooth"
+            });
         });
 
 
