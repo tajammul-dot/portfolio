@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 
+* k ap ne aik page bnana hai, uss pe upload ka button lgana hai pehle, upload pe click kren to aik file upload hojaye text file, uss file k contents ko read krwana hai
+* uss k neechay 2 button lganay hain
+*  Android and iPhone, sounds fun right?
+* agar android pe click kren to android phone koi bhi ajaye neechay and so for iphone
+* jo file se data read krwana hai wo whatsapp chat ka data read krwana hai
+* whatsapp chat ko export kr k jo file bnti hai wo upload krwani aur uss k contents ko read krwa k whatsapp ki complete layout bnani
+* for iphone and android
+ -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #222;
+            padding: 10px 0;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        nav ul li:hover {
+            color: #00bcd4;
+        }
+
+        /* Main Container */
+        main {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* File Upload Section */
+        .chooseFile {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            padding: 8px 16px;
+            margin-left: 10px;
+            background-color: #00bcd4;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0097a7;
+        }
+
+        /* Status Message */
+        .content {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Device Buttons */
+        .android button,
+        .iphone button {
+            margin: 15px 10px;
+            padding: 8px 20px;
+            border: none;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .iphone button {
+            background-color: #2196f3;
+        }
+
+        .android button:hover {
+            background-color: #388e3c;
+        }
+
+        .iphone button:hover {
+            background-color: #1976d2;
+        }
+
+
+        /* Device container: row layout */
+        .devices {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        /* Each device section */
+        .device {
+            text-align: center;
+        }
+
+        /* Buttons */
+        .device button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        .device:first-child button {
+            background-color: #4caf50;
+            /* Android green */
+        }
+
+        .device:first-child button:hover {
+            background-color: #388e3c;
+        }
+
+        .device:last-child button {
+            background-color: #2196f3;
+            /* iPhone blue */
+        }
+
+        .device:last-child button:hover {
+            background-color: #1976d2;
+        }
+
+        #androidContent img,
+        #iphoneContent img {
+            margin-top: 15px;
+            width: 200px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li>Home</li>
+            <li>About</li>
+            <li>Conact</li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Welcome to my page</h1>
+
+        <div class="chooseFile">
+            <p>Please select the a file</p>
+            <form id="uploadForm" action="">
+                <input type="file" name="txt" id="txt">
+                <input type="submit" value="Upload">
+                <p class="content"></p>
+
+                <div class="devices">
+                    <!-- Android -->
+                    <div class="device">
+                        <button id="androidBtn">Android</button>
+                        <div id="androidContent"></div>
+                    </div>
+
+                    <!-- iPhone -->
+                    <div class="device">
+                        <button id="iphoneBtn">iPhone</button>
+                        <div id="iphoneContent"></div>
+                    </div>
+                </div>
+
+
+
+        </div>
+        </div>
+        </form>
+        </div>
+    </main>
+
+    <script>
+        // const content = document.querySelector(".content");
+        // const fileInput = document.querySelector("input[type=file]");
+
+        // fileInput.addEventListener("change", previewFile);
+
+        // function previewFile() {
+        //     const file = fileInput.files[0];
+        //     const reader = new FileReader();
+
+        //     reader.addEventListener(
+        //         "load",
+        //         () => {
+        //             // this will then display a text file
+        //             content.innerText = reader.result;
+        //         },
+        //         false,
+        //     );
+
+        //     if (file) {
+        //         reader.readAsText(file);
+        //     }
+        // }
+
+        document.getElementById('uploadForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent actual page reload
+
+            const fileInput = document.getElementById('txt');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                document.querySelector('.content').textContent = "Please select a file first.";
+                return;
+            }
+
+            // Example: Read the file content as text (you can change to FormData for server upload)
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                document.querySelector('.content').textContent =
+                    `File "${file.name}" uploaded. Size: ${Math.round(file.size * 0.001)}kb`;
+
+                // You can now process event.target.result (file content) he)re
+                console.log("File content:", event.target.result);
+            };
+            reader.readAsText(file);
+        });
+
+
+
+
+
+        document.getElementById('androidBtn').addEventListener('click', function () {
+            document.getElementById('androidContent').innerHTML =
+                `<img src="android.jpg" alt="Android" >`;
+        });
+
+        document.getElementById('iphoneBtn').addEventListener('click', function () {
+            document.getElementById('iphoneContent').innerHTML =
+                `<img src="iphone.jpg" alt="iPhone" >`;
+        });
+
+
+    </script>
+</body>
+
+</html>
