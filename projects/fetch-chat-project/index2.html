@@ -271,7 +271,8 @@
         /* Screen background (WhatsApp wallpaper) */
         .screen {
             flex: 1;
-            padding: 12px 8px;
+            padding: 12px 8px 52px 8px;
+            /* Adjusted bottom padding for input area */
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -356,6 +357,25 @@
             filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
         }
 
+        /* System messages (security notifications, etc.) */
+        .system-msg {
+            align-self: center;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #856404;
+            font-size: 12px;
+            padding: 8px 12px;
+            margin: 8px 16px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 90%;
+            box-shadow: none;
+        }
+
+        .system-msg::after {
+            display: none;
+        }
+
         /* Metadata inside bubble */
         .meta {
             display: flex;
@@ -374,6 +394,143 @@
             font-weight: 600;
         }
 
+        /* WhatsApp Input Box - Fixed sizing and positioning */
+        .input-container {
+            background: #f0f0f0;
+            padding: 6px 8px;
+            /* Reduced padding */
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            /* Reduced gap */
+            border-top: 1px solid #e0e0e0;
+            position: absolute;
+            bottom: 32px;
+            /* Position above footer */
+            left: 0;
+            right: 0;
+            z-index: 5;
+            height: 48px;
+            /* Fixed height to prevent extra space */
+        }
+
+        .input-wrapper {
+            flex: 1;
+            background: white;
+            border-radius: 18px;
+            /* Smaller radius */
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            /* Reduced padding */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            min-height: 36px;
+            /* Fixed height */
+        }
+
+        .message-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            /* Smaller font */
+            font-family: inherit;
+            background: transparent;
+            color: #333;
+            line-height: 1.2;
+            padding: 4px 0;
+            /* Minimal padding */
+        }
+
+        .message-input::placeholder {
+            color: #999;
+        }
+
+        .attach-btn,
+        .emoji-btn,
+        .camera-btn,
+        .voice-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            /* Smaller icons */
+            color: #7a7a7a;
+            cursor: pointer;
+            padding: 6px;
+            /* Reduced padding */
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 32px;
+            /* Fixed width */
+            height: 32px;
+            /* Fixed height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transform: scale(1);
+            flex-shrink: 0;
+            /* Prevent shrinking */
+        }
+
+        .attach-btn:hover,
+        .emoji-btn:hover,
+        .camera-btn:hover,
+        .voice-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .send-btn {
+            width: 36px;
+            /* Smaller send button */
+            height: 36px;
+            background: #25D366;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 16px;
+            /* Smaller icon */
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+            flex-shrink: 0;
+            /* Prevent shrinking */
+        }
+
+        .send-btn.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .send-btn:hover {
+            background-color: #1ea952;
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            /* Reduced gap */
+            position: relative;
+        }
+
+        .input-actions.typing .camera-btn,
+        .input-actions.typing .voice-btn {
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+        }
+
         .footer {
             background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
             color: #64748b;
@@ -382,6 +539,13 @@
             padding: 8px;
             font-weight: 500;
             border-top: 1px solid rgba(0, 0, 0, 0.05);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            height: 32px;
+            /* Fixed height */
         }
 
         /* Status indicators */
@@ -438,114 +602,6 @@
 
         .screen::-webkit-scrollbar-thumb:hover {
             background-color: rgba(0, 0, 0, 0.3);
-        }
-
-        /* WhatsApp Input Box */
-        .input-container {
-            background: #f0f0f0;
-            padding: 8px 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .input-wrapper {
-            flex: 1;
-            background: white;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            padding: 8px 16px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .message-input {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-size: 15px;
-            font-family: inherit;
-            background: transparent;
-            color: #333;
-        }
-
-        .message-input::placeholder {
-            color: #999;
-        }
-
-        .attach-btn,
-        .emoji-btn,
-        .camera-btn,
-        .voice-btn {
-            background: none;
-            border: none;
-            font-size: 22px;
-            color: #7a7a7a;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            min-width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .attach-btn:hover,
-        .emoji-btn:hover,
-        .camera-btn:hover,
-        .voice-btn:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .send-btn {
-            width: 44px;
-            height: 44px;
-            background: #25D366;
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: white;
-            font-size: 18px;
-            opacity: 0;
-            transform: scale(0);
-            pointer-events: none;
-        }
-
-        .send-btn.show {
-            opacity: 1;
-            transform: scale(1);
-            pointer-events: auto;
-        }
-
-        .send-btn:hover {
-            background-color: #1ea952;
-        }
-
-        .send-btn:active {
-            transform: scale(0.95);
-        }
-
-        .input-actions {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            position: relative;
-        }
-
-        .input-actions.typing .camera-btn,
-        .input-actions.typing .voice-btn {
-            opacity: 0;
-            transform: scale(0);
-            pointer-events: none;
         }
     </style>
 </head>
@@ -670,8 +726,6 @@
                     meSel.style.display = names.length ? 'inline-block' : 'none';
 
                     loadingIndicator.classList.remove('show');
-
-                    // DON'T auto-show iPhone view - wait for user to click view button
                 }, 300);
             };
             reader.readAsText(file);
@@ -745,6 +799,29 @@
             }
         }
 
+        // Function to detect if a message is a system message
+        function isSystemMessage(message) {
+            const systemPatterns = [
+                /security code.*changed/i,
+                /messages and calls are end-to-end encrypted/i,
+                /only people in this chat can read/i,
+                /you created group/i,
+                /left$/i,
+                /joined using this group's invite link/i,
+                /was added/i,
+                /was removed/i,
+                /changed the group description/i,
+                /changed this group's icon/i,
+                /changed the subject from/i,
+                /\u200E.*‬/,  // Messages with special unicode characters
+                /missed voice call/i,
+                /missed video call/i,
+                /this message was deleted/i
+            ];
+
+            return systemPatterns.some(pattern => pattern.test(message));
+        }
+
         function render(messages, meName, screenId) {
             const screen = document.getElementById(screenId);
             screen.innerHTML = '';
@@ -752,10 +829,18 @@
             messages.forEach((m, index) => {
                 setTimeout(() => {
                     const div = document.createElement('div');
-                    div.className = 'msg ' + (normalize(m.sender) === normalize(meName) ? 'sent' : 'received');
                     const textHtml = escapeHtml(m.message);
-                    const meta = `<div class="meta"><span>${escapeHtml(m.time)}</span>${normalize(m.sender) === normalize(meName) ? '<span class="ticks">✓✓</span>' : ''}</div>`;
-                    div.innerHTML = `${textHtml}${meta}`;
+
+                    // Check if this is a system message
+                    if (isSystemMessage(m.message)) {
+                        div.className = 'msg system-msg';
+                        div.innerHTML = textHtml;
+                    } else {
+                        div.className = 'msg ' + (normalize(m.sender) === normalize(meName) ? 'sent' : 'received');
+                        const meta = `<div class="meta"><span>${escapeHtml(m.time)}</span>${normalize(m.sender) === normalize(meName) ? '<span class="ticks">✓✓</span>' : ''}</div>`;
+                        div.innerHTML = `${textHtml}${meta}`;
+                    }
+
                     screen.appendChild(div);
                     screen.scrollTop = screen.scrollHeight;
                 }, index * 10);
