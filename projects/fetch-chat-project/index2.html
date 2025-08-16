@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Chat Viewer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-section {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .main-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .controls-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            background: #075E54;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-input-label:hover {
+            background: #064e45;
+            transform: translateY(-1px);
+        }
+
+        .controls button {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            color: #333;
+            border: 2px solid #e5e7eb;
+        }
+
+        .controls button:hover {
+            background: #f9fafb;
+            border-color: #075E54;
+            transform: translateY(-1px);
+        }
+
+        .controls select {
+            padding: 12px 16px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            font-weight: 500;
+        }
+
+        .hint {
+            font-size: 14px;
+            color: #6b7280;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* ========== PHONE FRAMES ========== */
+        .phone-container {
+            perspective: 1000px;
+            margin-top: 20px;
+        }
+
+        .phone {
+            width: 340px;
+            height: 720px;
+            background: linear-gradient(145deg, #1a1a1a, #000);
+            border-radius: 45px;
+            box-shadow:
+                0 0 0 2px rgba(255, 255, 255, 0.1),
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            position: relative;
+            transform: none;
+            transition: none;
+        }
+
+        /* iPhone style frame */
+        .iphone {
+            border: 8px solid #1a1a1a;
+        }
+
+        .iphone::before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 28px;
+            background: #000;
+            border-radius: 14px;
+            z-index: 10;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .iphone::after {
+            content: "";
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            z-index: 11;
+        }
+
+        /* Android style frame */
+        .android {
+            border: 6px solid #2a2a2a;
+            border-radius: 32px;
+        }
+
+        .android::before {
+            content: "";
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 6px;
+            background: #444;
+            border-radius: 3px;
+            z-index: 10;
+        }
+
+        /* WhatsApp Header */
+        .header {
+            background: linear-gradient(135deg, #075E54, #128C7E);
+            color: #fff;
+            padding: 16px 12px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .iphone .header {
+            padding-top: 44px;
+        }
+
+        .back {
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .back:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            display: grid;
+            place-items: center;
+            font-weight: 600;
+            font-size: 16px;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .cinfo {
+            line-height: 1.2;
+        }
+
+        .cname {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .cstatus {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Screen background (WhatsApp wallpaper) */
+        .screen {
+            flex: 1;
+            padding: 12px 8px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3), transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2), transparent 50%),
+                linear-gradient(135deg, #e5ddd5 0%, #d9d0c7 100%);
+            position: relative;
+        }
+
+        .screen::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M30 30c0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12 12-5.373 12-12zm0 0c0-6.627 5.373-12 12-12s12 5.373 12 12-5.373 12-12 12-12-5.373-12-12z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Chat bubbles */
+        .msg {
+            max-width: 85%;
+            padding: 10px 12px 6px;
+            margin: 2px 8px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            position: relative;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            animation: messageSlideIn 0.3s ease-out;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sent {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #dcf8c6, #d4f4c4);
+            border-bottom-right-radius: 4px;
+            color: #1f2937;
+        }
+
+        .received {
+            align-self: flex-start;
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border-bottom-left-radius: 4px;
+            color: #1f2937;
+        }
+
+        .sent::after {
+            content: "";
+            position: absolute;
+            right: -6px;
+            bottom: 0;
+            border-left: 8px solid #dcf8c6;
+            border-top: 8px solid transparent;
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+        }
+
+        .received::after {
+            content: "";
+            position: absolute;
+            left: -6px;
+            bottom: 0;
+            border-right: 8px solid #ffffff;
+            border-top: 8px solid transparent;
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+        }
+
+        /* Metadata inside bubble */
+        .meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: flex-end;
+            margin-top: 4px;
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .ticks {
+            font-size: 12px;
+            color: #34B7F1;
+            font-weight: 600;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            color: #64748b;
+            font-size: 11px;
+            text-align: center;
+            padding: 8px;
+            font-weight: 500;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Status indicators */
+        .loading-indicator {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .loading-indicator.show {
+            display: block;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            .main-title {
+                font-size: 28px;
+            }
+
+            .phone {
+                width: 300px;
+                height: 600px;
+                transform: none;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .controls-container {
+                padding: 20px;
+            }
+        }
+
+        /* Smooth scrollbar for chat */
+        .screen::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .screen::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .screen::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 2px;
+        }
+
+        .screen::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        /* WhatsApp Input Box */
+        .input-container {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            font-family: inherit;
+            background: transparent;
+            color: #333;
+        }
+
+        .message-input::placeholder {
+            color: #999;
+        }
+
+        .attach-btn,
+        .emoji-btn,
+        .camera-btn,
+        .voice-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #7a7a7a;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .attach-btn:hover,
+        .emoji-btn:hover,
+        .camera-btn:hover,
+        .voice-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            background: #25D366;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 18px;
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+        }
+
+        .send-btn.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .send-btn:hover {
+            background-color: #1ea952;
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+        }
+
+        .input-actions.typing .camera-btn,
+        .input-actions.typing .voice-btn {
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-section">
+        <h1 class="main-title">WhatsApp Chat Viewer</h1>
+        <p class="subtitle">Experience your conversations in a realistic mobile interface</p>
+    </div>
+
+    <div class="controls-container">
+        <div class="controls">
+            <div class="control-row">
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" accept=".txt">
+                    <label for="fileInput" class="file-input-label">
+                        📁 Choose Chat File
+                    </label>
+                </div>
+            </div>
+            <div class="control-row">
+                <button onclick="showPhone('iphone')">📱 iPhone View</button>
+                <button onclick="showPhone('android')">🤖 Android View</button>
+            </div>
+            <div class="control-row">
+                <select id="meSelect" style="display:none"></select>
+            </div>
+        </div>
+        <div class="hint">
+            Export your WhatsApp chat as a .txt file, upload it here, then select your identity and choose a device
+            view.
+        </div>
+    </div>
+
+    <div class="loading-indicator" id="loadingIndicator">
+        Processing your chat file...
+    </div>
+
+    <div class="phone-container">
+        <!-- iPhone -->
+        <div class="phone iphone" id="iphone">
+            <div class="header">
+                <span class="back">←</span>
+                <div class="avatar" id="avatar1">?</div>
+                <div class="cinfo">
+                    <div class="cname" id="cname1">Contact</div>
+                    <div class="cstatus">online</div>
+                </div>
+            </div>
+            <div class="screen" id="screen1"></div>
+            <div class="input-container">
+                <button class="attach-btn">📎</button>
+                <div class="input-wrapper">
+                    <button class="emoji-btn">😊</button>
+                    <input type="text" class="message-input" placeholder="Type a message" id="messageInput1">
+                </div>
+                <div class="input-actions" id="inputActions1">
+                    <button class="camera-btn" style="display: flex;">📷</button>
+                    <button class="voice-btn" style="display: flex;">🎤</button>
+                    <button class="send-btn" id="sendBtn1">➤</button>
+                </div>
+            </div>
+            <div class="footer">iPhone WhatsApp</div>
+        </div>
+
+        <!-- Android -->
+        <div class="phone android" id="android">
+            <div class="header">
+                <span class="back">←</span>
+                <div class="avatar" id="avatar2">?</div>
+                <div class="cinfo">
+                    <div class="cname" id="cname2">Contact</div>
+                    <div class="cstatus">last seen today</div>
+                </div>
+            </div>
+            <div class="screen" id="screen2"></div>
+            <div class="input-container">
+                <button class="attach-btn">📎</button>
+                <div class="input-wrapper">
+                    <button class="emoji-btn">😊</button>
+                    <input type="text" class="message-input" placeholder="Type a message" id="messageInput2">
+                </div>
+                <div class="input-actions" id="inputActions2">
+                    <button class="camera-btn" style="display: flex;">📷</button>
+                    <button class="voice-btn" style="display: flex;">🎤</button>
+                    <button class="send-btn" id="sendBtn2">➤</button>
+                </div>
+            </div>
+            <div class="footer">Android WhatsApp</div>
+        </div>
+    </div>
+
+    <script>
+        let messages = [];
+        const meSel = document.getElementById('meSelect');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        document.getElementById('fileInput').addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            loadingIndicator.classList.add('show');
+
+            const reader = new FileReader();
+            reader.onload = ev => {
+                setTimeout(() => {
+                    const raw = ev.target.result;
+                    messages = parseWhatsapp(raw);
+
+                    if (!messages.length) {
+                        alert('No messages parsed from file. Please check the format.');
+                        loadingIndicator.classList.remove('show');
+                        return;
+                    }
+
+                    const names = [...new Set(messages.map(m => m.sender).filter(Boolean))];
+                    let me = names.find(n => /^you$/i.test(n)) || names[0] || '';
+
+                    meSel.innerHTML = names.map(n =>
+                        `<option value="${escapeHtml(n)}"${n === me ? ' selected' : ''}>${escapeHtml(n)}</option>`
+                    ).join('');
+                    meSel.style.display = names.length ? 'inline-block' : 'none';
+
+                    loadingIndicator.classList.remove('show');
+
+                    // DON'T auto-show iPhone view - wait for user to click view button
+                }, 300);
+            };
+            reader.readAsText(file);
+        });
+
+        // Add event listener for identity change
+        meSel.addEventListener('change', () => {
+            // Find which phone is currently visible
+            const iphoneVisible = document.getElementById('iphone').style.display === 'flex';
+            const androidVisible = document.getElementById('android').style.display === 'flex';
+
+            if (iphoneVisible) {
+                showPhone('iphone');
+            } else if (androidVisible) {
+                showPhone('android');
+            }
+        });
+
+        let currentPhoneType = null;
+
+        // Setup input field behavior for realistic WhatsApp experience
+        function setupInputBehavior() {
+            const setupInput = (inputId, actionsId, sendBtnId) => {
+                const input = document.getElementById(inputId);
+                const actions = document.getElementById(actionsId);
+                const sendBtn = document.getElementById(sendBtnId);
+
+                if (input && actions && sendBtn) {
+                    input.addEventListener('input', (e) => {
+                        const hasText = e.target.value.trim().length > 0;
+                        if (hasText) {
+                            actions.classList.add('typing');
+                            sendBtn.classList.add('show');
+                        } else {
+                            actions.classList.remove('typing');
+                            sendBtn.classList.remove('show');
+                        }
+                    });
+
+                    // Clear input when send is clicked (for demonstration)
+                    sendBtn.addEventListener('click', () => {
+                        input.value = '';
+                        input.dispatchEvent(new Event('input')); // Trigger input event to hide send button
+                    });
+                }
+            };
+
+            setupInput('messageInput1', 'inputActions1', 'sendBtn1');
+            setupInput('messageInput2', 'inputActions2', 'sendBtn2');
+        }
+
+        // Initialize input behavior when DOM is loaded
+        setupInputBehavior();
+
+        function showPhone(type) {
+            document.querySelectorAll('.phone').forEach(p => p.style.display = 'none');
+            currentPhoneType = type;
+            const me = meSel.value;
+            const other = [...new Set(messages.map(m => m.sender))].find(n => n !== me) || 'Contact';
+
+            if (type === 'iphone') {
+                document.getElementById('cname1').textContent = other;
+                document.getElementById('avatar1').textContent = initials(other);
+                render(messages, me, 'screen1');
+                document.getElementById('iphone').style.display = 'flex';
+            } else {
+                document.getElementById('cname2').textContent = other;
+                document.getElementById('avatar2').textContent = initials(other);
+                render(messages, me, 'screen2');
+                document.getElementById('android').style.display = 'flex';
+            }
+        }
+
+        function render(messages, meName, screenId) {
+            const screen = document.getElementById(screenId);
+            screen.innerHTML = '';
+
+            messages.forEach((m, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'msg ' + (normalize(m.sender) === normalize(meName) ? 'sent' : 'received');
+                    const textHtml = escapeHtml(m.message);
+                    const meta = `<div class="meta"><span>${escapeHtml(m.time)}</span>${normalize(m.sender) === normalize(meName) ? '<span class="ticks">✓✓</span>' : ''}</div>`;
+                    div.innerHTML = `${textHtml}${meta}`;
+                    screen.appendChild(div);
+                    screen.scrollTop = screen.scrollHeight;
+                }, index * 10);
+            });
+        }
+
+        // ======= Parser (unchanged) =======
+        function parseWhatsapp(text) {
+            const lines = text.replace(/\r/g, '').split('\n');
+            const pBracket = /^\[(\d{1,2}\/\d{1,2}\/\d{2,4}),\s(\d{1,2}:\d{2}(?::\d{2})?)\s?(AM|PM|am|pm)?\]\s([^:]+):\s([\s\S]+)$/u;
+            const pDash = /^(\d{1,2}\/\d{1,2}\/\d{2,4}),\s(\d{1,2}:\d{2}(?::\d{2})?)\s?(AM|PM|am|pm)?\s[-–]\s([^:]+):\s(.+)$/u;
+            const out = [];
+            let last = null;
+
+            for (let raw of lines) {
+                if (!raw.trim()) continue;
+                let m = raw.match(pBracket) || raw.match(pDash);
+                if (m) {
+                    const date = m[1];
+                    const time = m[2] + (m[3] ? ` ${m[3].toUpperCase()}` : '');
+                    const sender = m[4].trim();
+                    const message = m[5];
+                    last = { date, time, sender, message };
+                    out.push(last);
+                } else if (last) {
+                    last.message += '\n' + raw;
+                }
+            }
+            return out;
+        }
+
+        // ===== Helpers (unchanged) =====
+        function normalize(s) { return (s || '').trim().toLowerCase(); }
+        function escapeHtml(s) { return (s || '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch])); }
+        function initials(name) {
+            const parts = name.split(/\s+/).filter(Boolean);
+            return (parts[0]?.[0] || '') + (parts[1]?.[0] || '');
+        }
+    </script>
+</body>
+
+</html>
