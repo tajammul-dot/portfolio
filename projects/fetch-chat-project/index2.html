@@ -414,6 +414,42 @@
             /* Fixed height to prevent extra space */
         }
 
+        .input-container {
+            background: #f0f0f0;
+            padding: 6px 12px;
+            /* 🔄 was 8px → now 12px for breathing room */
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-top: 1px solid #e0e0e0;
+            position: absolute;
+            bottom: 32px;
+            left: 0;
+            right: 0;
+            z-index: 5;
+            height: 48px;
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            position: relative;
+            margin-right: 2px;
+            /* ✅ small buffer */
+        }
+
+        .camera-btn,
+        .voice-btn,
+        .send-btn {
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-right: 2px;
+            /* ✅ tiny gap to prevent overflow */
+        }
+
         .input-wrapper {
             flex: 1;
             background: white;
@@ -482,7 +518,6 @@
 
         .send-btn {
             width: 36px;
-            /* Smaller send button */
             height: 36px;
             background: #25D366;
             border: none;
@@ -491,21 +526,18 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             color: white;
             font-size: 16px;
-            /* Smaller icon */
             opacity: 0;
             transform: scale(0);
             pointer-events: none;
-            flex-shrink: 0;
-            /* Prevent shrinking */
         }
 
         .send-btn.show {
-            opacity: 1;
-            transform: scale(1);
-            pointer-events: auto;
+            opacity: 1 !important;
+            transform: scale(1) !important;
+            pointer-events: auto !important;
         }
 
         .send-btn:hover {
@@ -516,6 +548,7 @@
             transform: scale(0.95);
         }
 
+
         .input-actions {
             display: flex;
             align-items: center;
@@ -524,11 +557,48 @@
             position: relative;
         }
 
+        /* Default state: show camera + voice, hide send */
+        .input-actions .send-btn {
+            display: none;
+        }
+
         .input-actions.typing .camera-btn,
         .input-actions.typing .voice-btn {
             opacity: 0;
             transform: scale(0);
             pointer-events: none;
+        }
+
+        /* When typing: hide camera + voice, show send */
+        .input-actions.typing .camera-btn,
+        .input-actions.typing .voice-btn {
+            display: none !important;
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            position: relative;
+            margin-right: 4px;
+            /* ✅ add small margin so it doesn't touch phone edge */
+        }
+
+        .camera-btn,
+        .voice-btn,
+        .send-btn {
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+
+        .input-actions.typing .send-btn {
+            display: flex !important;
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
         }
 
         .footer {
@@ -747,6 +817,7 @@
         let currentPhoneType = null;
 
         // Setup input field behavior for realistic WhatsApp experience
+
         function setupInputBehavior() {
             const setupInput = (inputId, actionsId, sendBtnId) => {
                 const input = document.getElementById(inputId);
@@ -757,18 +828,20 @@
                     input.addEventListener('input', (e) => {
                         const hasText = e.target.value.trim().length > 0;
                         if (hasText) {
+                            // Hide camera/voice, show send
                             actions.classList.add('typing');
                             sendBtn.classList.add('show');
                         } else {
+                            // Show camera/voice, hide send
                             actions.classList.remove('typing');
                             sendBtn.classList.remove('show');
                         }
                     });
 
-                    // Clear input when send is clicked (for demonstration)
+                    // When send is clicked, reset back
                     sendBtn.addEventListener('click', () => {
                         input.value = '';
-                        input.dispatchEvent(new Event('input')); // Trigger input event to hide send button
+                        input.dispatchEvent(new Event('input'));
                     });
                 }
             };
@@ -776,6 +849,7 @@
             setupInput('messageInput1', 'inputActions1', 'sendBtn1');
             setupInput('messageInput2', 'inputActions2', 'sendBtn2');
         }
+
 
         // Initialize input behavior when DOM is loaded
         setupInputBehavior();
