@@ -1061,7 +1061,7 @@
                     }
 
                     // If the message also contains caption text apart from placeholder/filename, show it:
-                    const caption = m.message.replace(PLACEHOLDER_RE, '').trim();
+                    const caption = m.message.replace(PLACEHOLDER_RE, '').replace(ATTACHED_RE, '').trim();
                     if (caption) {
                         contentHTML += `<div class="caption">${escapeHtml(caption)}</div>`;
                     }
@@ -1116,6 +1116,7 @@
                 document.getElementById('modalVideo').pause();
             }
         });
+        const ATTACHED_RE = /<attached:.*?>/gi;
 
     </script>
 </body>
