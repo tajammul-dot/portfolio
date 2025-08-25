@@ -1,3 +1,4 @@
+
 // Function to get weather using latitude & longitude
 const getLocation = () =>
     new Promise((resolve, reject) => {
@@ -65,15 +66,49 @@ document.getElementById("btn1").addEventListener("click", () => {
 
 // Function to get weather by city
 
-document.getElementById("btn2").addEventListener("click", getWeather2)
+const cities = [
+    "Karachi", "Lahore", "Islamabad", "Faisalabad", "Rawalpindi",
+    "Multan", "Quetta", "Peshawar", "Hyderabad", "Gujranwala",
+    "London", "New York", "Tokyo", "Paris", "Delhi"
+];
+
+const cityInput = document.getElementById("cityName");
+const dropBox = document.getElementById("drop-box");
+
+cityInput.addEventListener('input', () => {
+    const input = cityInput.value.toLowerCase();
+    dropBox.innerHTML = "";
+
+    if (input === "") return;
+
+    const filtered = cities.filter(city =>
+        city.toLowerCase().startsWith(input)
+    );
+
+    filtered.forEach(city => {
+        const div = document.createElement("div");
+        div.textContent = city;
+        div.addEventListener("click", () => {
+            cityInput.value = city;
+            dropBox.innerHTML = "";
+        });
+        dropBox.appendChild(div);
+    });
+});
+
+document.getElementById("btn2").addEventListener("click", getWeather2);
 
 function getWeather2() {
     const xhr = new XMLHttpRequest();
     const apiKey = '83fc1834c81b1ffce389bacf7fa8660a';
-    let city = document.getElementById("cityName").value;
-    // const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    let city = cityInput.value.trim();
 
+    if (city === "") {
+        document.getElementById('weather2').innerHTML = '❗ Please enter a city name.';
+        return;
+    }
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 
     xhr.open('GET', url, true);
     xhr.onload = function () {
@@ -86,52 +121,29 @@ function getWeather2() {
             const humidity = data.main.humidity;
             const rain = data.rain?.["1h"] ?? 0;
 
-
             document.getElementById('weather2').innerHTML = `
-            <p><strong>City:</strong> ${cityName}</p>
-           <p><strong>Temperature:</strong> ${temp}°C</p>
-           <p><strong>Condition:</strong> ${condition}</p>
-           <p><strong>Humidity:</strong> ${humidity}</p>
-           <p><strong>Rain:</strong> ${rain}</p>
-           <p><strong>Visibility:</strong> ${visibility}</p>`;
+          <p><strong>City:</strong> ${cityName}</p>
+          <p><strong>Temperature:</strong> ${temp}°C</p>
+          <p><strong>Condition:</strong> ${condition}</p>
+          <p><strong>Humidity:</strong> ${humidity}</p>
+          <p><strong>Rain:</strong> ${rain} mm</p>
+          <p><strong>Visibility:</strong> ${visibility} meters</p>
+        `;
         } else {
-            document.getElementById('weather2').innerHTML = 'Error fetching weather data.';
+            document.getElementById('weather2').innerHTML = '❌ Error: City not found.';
         }
     };
 
     xhr.onerror = function () {
-        document.getElementById('weather2').innerHTML = 'Request failed.';
+        document.getElementById('weather2').innerHTML = '❌ Request failed.';
     };
 
     xhr.send();
 }
-const cities = [
-    "Karachi", "Lahore", "Islamabad", "Faisalabad", "Rawalpindi",
-    "Multan", "Quetta", "Peshawar", "Hyderabad", "Gujranwala",
-    "London", "New York", "Tokyo", "Paris", "Delhi"
-];
 
-const dropBox = document.getElementById("drop-box")
-let cityName = document.getElementById("cityName")
-cityName.addEventListener('input', () => {
-    const input = cityName.value.toLowerCase();
-    dropBox.innerHTML = "";
-    if (input === "") return;
-
-    const filtered = cities.filter(city =>
-        city.toLowerCase().startsWith(input)
-    );
-
-
-
-    filtered.forEach(city => {
-        const div = document.createElement("div");
-        div.textContent = city;
-        div.addEventListener("click", () => {
-            city.value = city;
-            dropBox.innerHTML = "";
-            getWeather(city);
-        });
-        dropBox.appendChild(div);
-    });
+// Optional: Hide dropdown when clicking outside
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".app-card")) {
+        dropBox.innerHTML = "";
+    }
 });
